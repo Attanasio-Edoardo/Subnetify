@@ -1,0 +1,73 @@
+/* Stile di base */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+/* Contenitore principale */
+#container {
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 20px 40px;
+    text-align: center;
+    width: 300px;
+}
+
+/* Titolo principale */
+h1 {
+    color: #20b2aa; /* Verde acqua */
+    margin-bottom: 20px;
+}
+
+/* Campi di input */
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Pulsante */
+button {
+    background-color: #20b2aa; /* Verde acqua */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #1e9a93;
+}
+
+#subnet-table{
+    float: right;
+    display: none;
+}
+
+td{
+    border: 1px solid #20b2aa;
+}
