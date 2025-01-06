@@ -31,6 +31,10 @@ function createTableHeader() {
     return tr;
 }
 
+function getIp(){
+    return document.getElementById('ip');
+}
+
 function createTable(){
     return document.createElement('table');
 }
