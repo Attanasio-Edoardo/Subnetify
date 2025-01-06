@@ -52,13 +52,7 @@ function numOfSubnet(){
     
     let bitForSub = Math.log2(requestedSubnet);
 
-    if (Number.isInteger(bitForSub)) {
-        bitForSub += 1;
-    } else {
-        bitForSub = Math.ceil(bitForSub);
-    }
-
-    return bitForSub;
+    return Number.isInteger(bitForSub) ? bitForSub + 1 : Math.ceil(bitForSub);
 }
 
 function createSubnetTable(numSubnet){
