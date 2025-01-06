@@ -47,6 +47,18 @@ function dividedOctets(value){
     return value.split('.');
 }
 
+function defNetmask(){
+    let firstOctect = parseInt(dividedOctets(getIp())[0]);
+
+    return firstOctect >= 0 && firstOctect <= 127 ? 8 : firstOctect >= 128 && firstOctect <= 191 ? 16 : firstOctect >= 192 && firstOctect <= 223 ? 24 : console.log("l'indirizzo non è valido");
+}
+
+function necessaryNetmask(){
+    let defNetmask = defNetmask();
+
+    return defNetmask + numOfSubnet();
+}
+
 function calculateNetIp(){
 
 }
