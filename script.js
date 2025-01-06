@@ -39,6 +39,10 @@ function getContainer(){
     return document.getElementById('container');
 }
 
+function dividedOctets(value){
+    return value.split('.');
+}
+
 function calculateNetIp(){
 
 }
