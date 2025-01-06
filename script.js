@@ -47,9 +47,23 @@ function calculateNetIp(){
 
 }
 
+function numOfSubnet(){
+    let requestedSubnet = Number(document.getElementById('subnets'));
+    
+    let bitForSub = Math.log2(requestedSubnet);
+
+    if (Number.isInteger(bitForSub)) {
+        bitForSub += 1;
+    } else {
+        bitForSub = Math.ceil(bitForSub);
+    }
+
+    return bitForSub;
+}
+
 function createSubnetTable(numSubnet){
     const table = createTable();
-
+    const numSubnet =  2 ** numOfSubnet();
     table.appendChild(tableHeader());
 
     for (let i = 0; i < numSubnet; i++) {
