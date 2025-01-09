@@ -101,36 +101,31 @@ function numOfSubnet(){
 }
 
 //funzione che resitituisce l'ip di rete
-function calculateNetIp(numOfBit){
-    let networkParts = [];
-    let Ip = getIp();
-    let partsIp = dividedOctets(Ip);
-    let partsMask = subnetMasks[necessaryNetmask() - 1]; 
-    let netBinary = '';
-    let maskBin = '';
+function calculateNetIp(numOfBit) {
+    const Ip = getIp(); 
+    const partsIp = dividedOctets(Ip); 
+    const partsMask = subnetMasks[necessaryNetmask() - 1]; 
+    const numSubnetBits = numOfSubnet(); 
 
-    let ipBin = partsIp.map(octet => parseInt(octet).toString(2).padStart(8, '0')).join('');
-    maskBin = partsMask.map(octet => parseInt(octet).toString(2).padStart(8, '0')).join('');
-    let currentSubnetBit = calculateCurrentSubnetBit(numOfBit).padStart(numOfSubnet(),'0');
-    console.log('subnetbit', currentSubnetBit)
-    maskBin = maskBin.split('').splice(defNetmask(), numOfSubnet(), ...currentSubnetBit.split(''));
+    // Converte IP e maschera in binario
+    const ipBin = partsIp.map(octet => parseInt(octet).toString(2).padStart(8, '0')).join('');
+    const maskBin = partsMask.map(octet => parseInt(octet).toString(2).padStart(8, '0')).join('');
 
-    console.log(necessaryNetmask());
-    console.log(partsMask)
-    console.log("MASK: ",maskBin);
-    for(let i = 0; i < ipBin.length; i++){
-        netBinary += (ipBin[i] == '1' && maskBin[i] == '1') ? '1' : '0';
-        // console.log(netBinary)
+    // Calcola i bit della subnet
+    const subnetBits = numOfBit.toString(2).padStart(numSubnetBits, '0');
+
+    // Genera l'indirizzo di rete in binario
+    const networkBin = ipBin.substr(0, defNetmask()) + subnetBits + '0'.repeat(32 - defNetmask() - numSubnetBits); 
+
+    // Converte l'indirizzo di rete in formato decimale
+    const networkParts = [];
+    for (let i = 0; i < 4; i++) {
+        networkParts.push(parseInt(networkBin.substr(i * 8, 8), 2));
     }
 
-    for (let i = 0; i < 4; i++) 
-        networkParts.push(parseInt(netBinary.substr(i * 8, 8), 2));
-    console.log(networkParts)
-    // return networkParts;
-}
+    console.log(networkParts.join('.'));
 
-function calculateCurrentSubnetBit(num){
-    return num.toString(2);
+    return networkParts.join('.'); 
 }
 
 function createSubnetTable(){
