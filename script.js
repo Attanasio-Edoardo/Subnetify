@@ -100,6 +100,17 @@ function numOfSubnet(){
     return Number.isInteger(bitForSub) ? bitForSub + 1 : Math.ceil(bitForSub);
 }
 
+function rangeIp(numOfBit){
+    return rebuildIp(calculateFirstHostIp(numOfBit)) + "-" + rebuildIp(calculateDefGate(numOfBit));
+}
+
+function calculateFirstHostIp(numOfBit){
+    let broadIp = calculateNetIp(numOfBit).split('');
+    broadIp[31] = '1';
+
+    return broadIp.join('');
+}
+
 function calculateDefGate(numOfBit){
     let broadIp = calculateBroadIp(numOfBit).split('');
     broadIp[31] = '0';
@@ -111,7 +122,6 @@ function calculateDefGate(numOfBit){
 function calculateBroadIp(numOfBit){
     let netIpOfActualSubnet = calculateNetIp(numOfBit);
 
-    console.log(netIpOfActualSubnet,'---1');
     let broadIp = netIpOfActualSubnet.split('');
 
     const startBit = necessaryNetmask();
@@ -148,7 +158,6 @@ function rebuildIp(ip){
     for (let i = 0; i < 4; i++) {
         networkParts.push(parseInt(ip.substr(i * 8, 8), 2));
     }
-    console.log(networkParts.join('.'))
 
     return networkParts.join('.'); 
 }
@@ -161,9 +170,9 @@ function createSubnetTable(){
     for (let i = 0; i < numSubnet; i++) {
     const tr = createTr();
 
-        for (let j = 0; j < 4; j++) {
+        for (let j = 0; j <= 4; j++) {
             const td = createTd();
-            td.textContent = j == 0 ? `${i}` : j == 1 ? rebuildIp(calculateNetIp(i)) : j == 2 ? rebuildIp(calculateBroadIp(i)) : j == 3 ? rebuildIp(calculateDefGate(i)) : rangeIp(i);
+            td.textContent = j == 0 ? `${i}` : j == 1 ? rebuildIp(calculateNetIp(i)) : j == 2 ? rebuildIp(calculateBroadIp(i)) : j == 3 ? rebuildIp(calculateDefGate(i)) : j == 4 ? rangeIp(i): console.log("niente oh!!!");
             tr.appendChild(td);
         }
 
@@ -183,4 +192,5 @@ function createSubnetInfo(){
     }
 
     const table = createSubnetTable();
+    container.after(table);
 }
