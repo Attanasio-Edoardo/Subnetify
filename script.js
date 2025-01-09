@@ -101,8 +101,36 @@ function numOfSubnet(){
 }
 
 //funzione che resitituisce l'ip di rete
-function calculateNetIp(i){
-    
+function calculateNetIp(numOfBit){
+    let networkParts = [];
+    let Ip = getIp();
+    let partsIp = dividedOctets(Ip);
+    let partsMask = subnetMasks[necessaryNetmask() - 1]; 
+    let netBinary = '';
+    let maskBin = '';
+
+    let ipBin = partsIp.map(octet => parseInt(octet).toString(2).padStart(8, '0')).join('');
+    maskBin = partsMask.map(octet => parseInt(octet).toString(2).padStart(8, '0')).join('');
+    let currentSubnetBit = calculateCurrentSubnetBit(numOfBit).padStart(numOfSubnet(),'0');
+    console.log('subnetbit', currentSubnetBit)
+    maskBin = maskBin.split('').splice(defNetmask(), numOfSubnet(), ...currentSubnetBit.split(''));
+
+    console.log(necessaryNetmask());
+    console.log(partsMask)
+    console.log("MASK: ",maskBin);
+    for(let i = 0; i < ipBin.length; i++){
+        netBinary += (ipBin[i] == '1' && maskBin[i] == '1') ? '1' : '0';
+        // console.log(netBinary)
+    }
+
+    for (let i = 0; i < 4; i++) 
+        networkParts.push(parseInt(netBinary.substr(i * 8, 8), 2));
+    console.log(networkParts)
+    // return networkParts;
+}
+
+function calculateCurrentSubnetBit(num){
+    return num.toString(2);
 }
 
 function createSubnetTable(){
