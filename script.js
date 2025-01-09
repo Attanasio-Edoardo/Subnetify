@@ -220,7 +220,7 @@ function createSubnetInfo(){
         if(subnetCheck){
             const container = getContainer();
 
-            const existingTable = container.querySelector('table');
+            const existingTable = document.querySelector('table');
             if (existingTable){
                 existingTable.remove();
             }
