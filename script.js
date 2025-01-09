@@ -204,11 +204,10 @@ function checkSubnet(){
     let host = Number(document.getElementById('hosts').value);
     let netmaskBits = necessaryNetmask();
 
-    let bitSubnet = numOfSubnet();
     let bitHost = Math.log2(host);
 
     let bitHosts =  Number.isInteger(bitHost) ? bitHost + 1 : Math.ceil(bitHost);
-    return bitHosts < bitSubnet;
+    return bitHosts < netmaskBits;
 }
 
 function createSubnetInfo(){
