@@ -199,16 +199,17 @@ function checkIp(){
     return true;    
 }
 
-function checkSubnet(){
-    
-    let host = Number(document.getElementById('hosts').value);
-    let netmaskBits = necessaryNetmask();
+function checkSubnet() {
+    let host = Number(document.getElementById('hosts').value); 
+    let netmaskBits = necessaryNetmask(); 
 
-    let bitHost = Math.log2(host);
+    let totalBits = 32; 
+    let hostBits = totalBits - netmaskBits; 
+    let bitHosts = Math.ceil(Math.log2(host + 2)); 
 
-    let bitHosts =  Number.isInteger(bitHost) ? bitHost + 1 : Math.ceil(bitHost);
-    return bitHosts < netmaskBits;
+    return bitHosts <= hostBits; 
 }
+
 
 function createSubnetInfo(){
     
