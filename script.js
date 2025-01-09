@@ -100,6 +100,14 @@ function numOfSubnet(){
     return Number.isInteger(bitForSub) ? bitForSub + 1 : Math.ceil(bitForSub);
 }
 
+function calculateDefGate(numOfBit){
+    let broadIp = calculateBroadIp(numOfBit).split('');
+    broadIp[31] = '0';
+
+    return broadIp.join('');
+
+}
+
 function calculateBroadIp(numOfBit){
     let netIpOfActualSubnet = calculateNetIp(numOfBit);
 
@@ -140,6 +148,7 @@ function rebuildIp(ip){
     for (let i = 0; i < 4; i++) {
         networkParts.push(parseInt(ip.substr(i * 8, 8), 2));
     }
+    console.log(networkParts.join('.'))
 
     return networkParts.join('.'); 
 }
@@ -154,7 +163,7 @@ function createSubnetTable(){
 
         for (let j = 0; j < 4; j++) {
             const td = createTd();
-            td.textContent = j == 0 ? `${i}` : j == 1 ? rebuildIp(calculateNetIp(i)) : j == 2 ? rebuildIp(calculateBroadIp(i)) : j == 3 ? calculateDefGate(i) : rangeIp(i);
+            td.textContent = j == 0 ? `${i}` : j == 1 ? rebuildIp(calculateNetIp(i)) : j == 2 ? rebuildIp(calculateBroadIp(i)) : j == 3 ? rebuildIp(calculateDefGate(i)) : rangeIp(i);
             tr.appendChild(td);
         }
 
