@@ -188,10 +188,10 @@ function checkIp(){
         return false;
     }
 
-    const octets = ip.split('.').map(Number);
+    const octets = ip.split('.');
 
     for(let i = 0; i < octets.length; i++){
-        if(octets[i] < 0 && octets[i] > 255){
+        if(octets[i] < 0 || octets[i] > 255){
             return false;
         }
     }
@@ -205,10 +205,10 @@ function checkSubnet(){
     let netmaskBits = necessaryNetmask();
 
     let bitSubnet = numOfSubnet();
-    let bitHost = Math.ceil(Math.log2(host - 2));
-    let bitsHostCheck = 32 - netmaskBits;
+    let bitHost = Math.log2(host);
 
-    return bitSubnet + bitHost <= bitsHostCheck
+    let bitHosts =  Number.isInteger(bitHost) ? bitHost + 1 : Math.ceil(bitHost);
+    return bitHosts < bitSubnet;
 }
 
 function createSubnetInfo(){
