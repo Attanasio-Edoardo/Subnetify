@@ -139,20 +139,18 @@ function calculateNetIp(numOfBit) {
     const partsMask = subnetMasks[necessaryNetmask() - 1]; 
     const numSubnetBits = numOfSubnet(); 
 
-    // Converte IP e maschera in binario
     const ipBin = partsIp.map(octet => parseInt(octet).toString(2).padStart(8, '0')).join('');
     const maskBin = partsMask.map(octet => parseInt(octet).toString(2).padStart(8, '0')).join('');
 
     // Calcola i bit della subnet
     const subnetBits = numOfBit.toString(2).padStart(numSubnetBits, '0');
 
-    // Genera l'indirizzo di rete in binario
     const networkBin = ipBin.substr(0, defNetmask()) + subnetBits + '0'.repeat(32 - defNetmask() - numSubnetBits); 
 
     return networkBin;
     
 }
-// Converte l'indirizzo di rete in formato decimale
+
 function rebuildIp(ip){
     const networkParts = [];
     for (let i = 0; i < 4; i++) {
@@ -182,15 +180,58 @@ function createSubnetTable(){
     return table;
 }
 
+function checkIp(){
+    ip = getIp();
+    const formatIp = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
 
-function createSubnetInfo(){
-    const container = getContainer();
-
-    const existingTable = container.querySelector('table');
-    if (existingTable){
-        existingTable.remove();
+    if (!formatIp.test(ip)) {
+        return false;
     }
 
-    const table = createSubnetTable();
-    container.after(table);
+    const octets = ip.split('.').map(Number);
+
+    for(let i = 0; i < octets.length; i++){
+        if(octets[i] < 0 && octets[i] > 255){
+            return false;
+        }
+    }
+
+    return true;    
+}
+
+function checkSubnet(){
+    
+    let host = Number(document.getElementById('hosts').value);
+    let netmaskBits = necessaryNetmask();
+
+    let bitSubnet = numOfSubnet();
+    let bitHost = Math.ceil(Math.log2(host - 2));
+    let bitsHostCheck = 32 - netmaskBits;
+
+    return bitSubnet + bitHost <= bitsHostCheck
+}
+
+function createSubnetInfo(){
+    
+    let ipCheck = checkIp()
+    let subnetCheck = checkSubnet()
+
+    if(ipCheck){
+
+        if(subnetCheck){
+            const container = getContainer();
+
+            const existingTable = container.querySelector('table');
+            if (existingTable){
+                existingTable.remove();
+            }
+
+            const table = createSubnetTable();
+            container.after(table);
+        }else{
+            alert('Configurazione subnet non valida')
+        }
+    }else{
+        alert('Indirizzo IP non valido');
+    }
 }
