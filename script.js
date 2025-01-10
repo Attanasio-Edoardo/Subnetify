@@ -101,21 +101,15 @@ function numOfSubnet(){
 }
 
 function rangeIp(numOfBit){
-    return rebuildIp(calculateFirstHostIp(numOfBit)) + "-" + rebuildIp(calculateDefGate(numOfBit));
+    return rebuildIp(calculateFirstAndUltimateHost(numOfBit, '1')) + " - " + rebuildIp(calculateFirstAndUltimateHost(numOfBit, '0'));
 }
 
-function calculateFirstHostIp(numOfBit){
-    let broadIp = calculateNetIp(numOfBit).split('');
-    broadIp[31] = '1';
+function calculateFirstAndUltimateHost(numOfBit, index){
+    let host = index === '0' ? calculateBroadIp(numOfBit).split('') : calculateNetIp(numOfBit).split('');
 
-    return broadIp.join('');
-}
+    host[31] = index;
 
-function calculateDefGate(numOfBit){
-    let broadIp = calculateBroadIp(numOfBit).split('');
-    broadIp[31] = '0';
-
-    return broadIp.join('');
+    return host.join('');
 
 }
 
@@ -170,7 +164,7 @@ function createSubnetTable(){
 
         for (let j = 0; j <= 4; j++) {
             const td = createTd();
-            td.textContent = j == 0 ? `${i}` : j == 1 ? rebuildIp(calculateNetIp(i)) : j == 2 ? rebuildIp(calculateBroadIp(i)) : j == 3 ? rebuildIp(calculateDefGate(i)) : j == 4 ? rangeIp(i): console.log("niente oh!!!");
+            td.textContent = j == 0 ? `${i}` : j == 1 ? rebuildIp(calculateNetIp(i)) : j == 2 ? rebuildIp(calculateBroadIp(i)) : j == 3 ? rebuildIp(calculateFirstAndUltimateHost(i, '0')) : j == 4 ? rangeIp(i): console.log("niente oh!!!");
             tr.appendChild(td);
         }
 
@@ -182,7 +176,7 @@ function createSubnetTable(){
 
 function checkIp(){
     ip = getIp();
-    const formatIp = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
+    const formatIp = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
 
     if (!formatIp.test(ip)) {
         return false;
@@ -215,16 +209,18 @@ function createSubnetInfo(){
     
     let ipCheck = checkIp()
     let subnetCheck = checkSubnet()
+    const existingTable = document.querySelector('table');
+
+    if (existingTable){
+        existingTable.remove();
+    }
 
     if(ipCheck){
 
         if(subnetCheck){
             const container = getContainer();
 
-            const existingTable = document.querySelector('table');
-            if (existingTable){
-                existingTable.remove();
-            }
+            
 
             const table = createSubnetTable();
             container.after(table);
