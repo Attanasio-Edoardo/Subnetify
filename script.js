@@ -50,7 +50,8 @@ function createTableHeader() {
 
     const headers = [
         'N° SUBNET', 
-        'INDIRIZZO DI RETE', 
+        'INDIRIZZO DI RETE',
+        'NETMASK',
         'INDIRIZZO DI BROADCAST', 
         'Default Gateway', 
         'RANGE INDIRIZZI'
@@ -162,9 +163,9 @@ function createSubnetTable(){
     for (let i = 0; i < numSubnet; i++) {
     const tr = createTr();
 
-        for (let j = 0; j <= 4; j++) {
+        for (let j = 0; j <= 5; j++) {
             const td = createTd();
-            td.textContent = j == 0 ? `${i}` : j == 1 ? rebuildIp(calculateNetIp(i)) : j == 2 ? rebuildIp(calculateBroadIp(i)) : j == 3 ? rebuildIp(calculateFirstAndUltimateHost(i, '0')) : j == 4 ? rangeIp(i): console.log("niente oh!!!");
+            td.textContent = j == 0 ? `${i}` : j == 1 ? rebuildIp(calculateNetIp(i)) : j == 2 ? `${subnetMasks[necessaryNetmask() - 1].join('.')}`: j == 3 ? rebuildIp(calculateBroadIp(i)) : j == 4 ? rebuildIp(calculateFirstAndUltimateHost(i, '0')) : j == 5 ? rangeIp(i): console.log("niente oh!!!");
             tr.appendChild(td);
         }
 
@@ -219,8 +220,6 @@ function createSubnetInfo(){
 
         if(subnetCheck){
             const container = getContainer();
-
-            
 
             const table = createSubnetTable();
             container.after(table);
