@@ -98,7 +98,7 @@ function numOfSubnet(){
 
     let bitForSub = Math.log2(requestedSubnet);
 
-    return Math.ceil(biForSub)//Number.isInteger(bitForSub) ? bitForSub + 1 : Math.ceil(bitForSub);
+    return  Math.ceil(bitForSub); // Number.isInteger(bitForSub) ? bitForSub + 1 : Math.ceil(bitForSub);
 }
 
 function rangeIp(numOfBit){
